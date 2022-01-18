@@ -9,6 +9,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// ! unit test
+
 // ? aturan menjalankan unit test
 // * saat akan menjalankan unit test kita harus masuk dulu ke directory package dari function yang akan di test
 // * namun jika kita ingin menjalankan semua unit test yang ada di dalam sebuah package maka bisa melakukannya dengan perintah go test ./...
@@ -69,6 +71,37 @@ import (
 
 // ? require
 // * pengecekan yang dilakukan dengan package testify dan jika terjadi error maka akan memanggil t.FailNow()
+
+// ! Benchmark
+
+// ? aturan penamaan file bechmark
+// * untuk aturan penamaannya sendiri sama dengan unit test yang mana harus memiliki akhiran _test
+
+// ? aturan pembuatan function benchmark
+// * harus diawali dengan kata Benchmark
+// * contohnya BenchmarkHelloIvan()
+// * harus memiliki parameter (b *testing.B)
+// * testing.B sendiri memiliki kesamaan dengan testing.T dan memiliki method seperti Fail(), FailNow(), dan sebagainya
+
+// ? menjalankan function benchmark
+// * go test -v -bench=.
+// akan menjalankan seluruh benchmark di dalam module, tetapi function unit test juga akan dijalankan
+// * go test -v -run=NotMathUnitTest -bench=.
+// NotMathUnitTest bisa kita ini dengan nama function yang tidak ada dalam unit test di dalam module
+// ini akan menjalankan seluruh benchmark yang ada
+// * go test -v run=NotMathUnitTest -bench=BechmarkTest
+// BenchmarkTest bisa kita isi dengan function benchmark yang akan kita jalankan
+// ini akan menjalankan function benchmark tertentu
+// * go test -v -bench=. ./..
+// menjalankan benchmark di root project
+
+// ? sub benchmark
+// * kita juga bisa melakukan sub benchmark seperti di unit test
+// * caranya juga sama dan kita hanya perlu memanggil method b.run()
+
+// ? table benchmark
+// * kita juga bisa membuat table benchmark
+// * caranya juga sama seperti yang ada di unit test
 
 func TestMain(m *testing.M) {
 	// * before unit test
@@ -179,5 +212,18 @@ func TestTableTest(t *testing.T) {
 			result := HelloWord(value.request)
 			require.Equal(t, value.expected, result, "Must be equal")
 		})
+	}
+}
+
+// ? benchmark
+func BenchmarkHelloIvan(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		HelloWord("Ivan")
+	}
+}
+
+func BenchmarkHelloAis(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		HelloWord("Ais")
 	}
 }
